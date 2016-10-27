@@ -1,4 +1,5 @@
 <?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
 class CommonArgument{
 
@@ -8,9 +9,26 @@ class CommonArgument{
     private $json_strict_mode = false;
     private $json_verbose_response =  false;
 
+    public function __construct($data=[]){
+        if($data!=[]){
+            $this->set($data);
+        }
+    }
+    public function __destruct(){
+        unset($this->uid);
+        unset($this->token);
+        unset($this->api_token);
+        unset($this->json_strict_mode);
+        unset($this->json_verbose_response);
+    }
 
-    public function __construct(){}
-    public function __destruct(){}
+    public function set($data_array){
+        if(array_key_exists('uid', $data_array)) $this->setUid($data_array['uid']);
+        if(array_key_exists('token', $data_array)) $this->setToken($data_array['token']);
+        if(array_key_exists('api_token', $data_array)) $this->setApiToken($data_array['uid']);
+        if(array_key_exists('json_strict_mode', $data_array)) $this->setJsonStrictMode($data_array['json-strict-mode']);
+        if(array_key_exists('json_verbose_response', $data_array)) $this->setJsonVerboseResponse($data_array['json-verbose-response']);
+    }
 
     public function getUid(){return $this->uid;}
     public function setUid($uid){$this->uid = $uid;}
@@ -27,5 +45,4 @@ class CommonArgument{
     public function getJsonVerboseResponse(){return $this->json_verbose_response;}
     public function setJsonVerboseResponse($json_verbose_response){$this->json_verbose_response = $json_verbose_response;}
 }
-
 ?>

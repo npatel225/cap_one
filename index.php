@@ -1,0 +1,5 @@
+<?php
+// Shree Swaminarayanyo Vijayteh //
+
+
+?>

@@ -15,7 +15,7 @@ class DayBalance extends BaseObject{
     public function _construct(){}
 
     public function set($data){
-        if(array_key_exists('day', $data))$this->setDay($data['data']);
+        if(array_key_exists('day', $data))$this->setDay(new CommonDay($data['data']));
         if(array_key_exists('balance', $data))$this->setBalance($data['balance']);
         if(array_key_exists('day', $data))$this->setDay($data['data']);
 

@@ -3,6 +3,12 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
 class CommonArgument{
 
+    const UID                   = 'uid';
+    const TOKEN                 = 'token';
+    const API_TOKEN             = 'api-token';
+    const JSON_STRICT_MODE      = 'json-strict-mode';
+    const JSON_VERBOSE_RESPONSE = 'json-verbose-response';
+
     private $uid = 0;
     private $token = '';
     private $api_token = '';
@@ -23,11 +29,11 @@ class CommonArgument{
     }
 
     public function set($data_array){
-        if(array_key_exists('uid', $data_array)) $this->setUid($data_array['uid']);
-        if(array_key_exists('token', $data_array)) $this->setToken($data_array['token']);
-        if(array_key_exists('api_token', $data_array)) $this->setApiToken($data_array['uid']);
-        if(array_key_exists('json_strict_mode', $data_array)) $this->setJsonStrictMode($data_array['json-strict-mode']);
-        if(array_key_exists('json_verbose_response', $data_array)) $this->setJsonVerboseResponse($data_array['json-verbose-response']);
+        if(array_key_exists('uid', $data_array)) $this->setUid($data_array[self::UID]);
+        if(array_key_exists('token', $data_array)) $this->setToken($data_array[self::TOKEN]);
+        if(array_key_exists('api_token', $data_array)) $this->setApiToken($data_array[self::API_TOKEN]);
+        if(array_key_exists('json_strict_mode', $data_array)) $this->setJsonStrictMode($data_array[self::JSON_STRICT_MODE]);
+        if(array_key_exists('json_verbose_response', $data_array)) $this->setJsonVerboseResponse($data_array[self::JSON_VERBOSE_RESPONSE]);
     }
 
     public function getUid(){return $this->uid;}
@@ -44,5 +50,15 @@ class CommonArgument{
 
     public function getJsonVerboseResponse(){return $this->json_verbose_response;}
     public function setJsonVerboseResponse($json_verbose_response){$this->json_verbose_response = $json_verbose_response;}
+
+    public function buildArray(){
+        return [
+            self::UID =>$this->getUid(),
+            self::TOKEN =>$this->getToken(),
+            self::API_TOKEN =>$this->getApiToken(),
+            self::JSON_STRICT_MODE =>$this->getJsonStrictMode(),
+            self::JSON_VERBOSE_RESPONSE =>$this->getJsonVerboseResponse(),
+        ];
+    }
 }
 ?>

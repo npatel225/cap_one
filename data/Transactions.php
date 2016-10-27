@@ -34,6 +34,15 @@ class Transactions {
 
     public function getTransactions(){return $this->transactions;}
     private function setTransactions($transactions){$this->transactions = $transactions;}
+    public function getTransactionById($transaction_id){
+        foreach($this->transactions as $t){
+            if($t->getId() == $transaction_id){
+                return $t;
+            }
+        }
+        return false;
+    }
+    public function disableTransactionsBy
 
     public function getTransactionBreakdown(){return $this->transaction_breakdown;}
     private function addToSpending($year, $month, $amount){

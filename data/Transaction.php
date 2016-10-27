@@ -3,7 +3,18 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
 class Transaction extends BaseObject{
 
-    const PRIMARY_KEY = 'transaction-id';
+    const TRANSACTION_ID                = 'transaction-id';
+    const ACCOUNT_ID                    = 'transaction';
+    const RAW_MERCHANT                  = 'raw-merchant';
+    const MERCHANT                      = 'merchant';
+    const IS_PENDING                    = 'is-pending';
+    const TRANSACTION_TIME              = 'transaction-time';
+    const AMOUNT                        = 'amount';
+    const PREVIOUS_TRANSACTION_ID       = 'previous-transaction-id';
+    const CATEGORIZATION                = 'categorization';
+    const MEMO_ONLY_FOR_TESTING         = 'memo-only-for-testing';
+    const PAYEE_NAME_ONLY_FOR_TESTING   = 'payee-name-only-for-testing';
+    const CLEAR_DATE                    = 'clear-date';
 
     private $transaction_id = '';
     private $account_id = '';
@@ -23,6 +34,7 @@ class Transaction extends BaseObject{
             $this->set($data);
         }
     }
+
     public function __destruct(){
         unset($this->transaction_id);
         unset($this->account_id);
@@ -39,22 +51,19 @@ class Transaction extends BaseObject{
     }
 
     public function set($data){
-        if(array_key_exists(self::PRIMARY_KEY, $data)){
-            $this->setId($data[self::PRIMARY_KEY]);
-            $this->setAccountId($data['account-id']);
-            $this->setRawMerchant($data['raw-merchant']);
-            $this->setMerchant($data['merchant']);
-            $this->setPending($data['set-pending']);
-            $this->setTransactionTime($data['transaction-time']);
-            $this->setAmount($data['amount']);
-            $this->setPreviousTransactionId($data['previous-transaction-id']);
-            $this->setCategorization($data['categorization']);
-            $this->setMemoOnlyForTesting($data['memo-only-for-testing']);
-            $this->setPayeeNameOnlyForTesting($data['payee-name-only-for-testing']);
-            $this->setClearDate($data['clear-date']);
-        }
-
-        if(array_key_exists('error', $data))$this->setError($data['error']);
+        parent::set($data);
+        if(array_key_exists(self::TRANSACTION_ID, $data))$this->setId($data[self::TRANSACTION_ID]);
+        if(array_key_exists(self::ACCOUNT_ID, $data))$this->setAccountId($data[self::ACCOUNT_ID]);
+        if(array_key_exists(self::RAW_MERCHANT, $data))$this->setRawMerchant($data[self::RAW_MERCHANT]);
+        if(array_key_exists(self::MERCHANT, $data))$this->setMerchant($data[self::MERCHANT]);
+        if(array_key_exists(self::IS_PENDING, $data))$this->setPending($data[self::IS_PENDING]);
+        if(array_key_exists(self::TRANSACTION_TIME, $data))$this->setTransactionTime($data[self::TRANSACTION_TIME]);
+        if(array_key_exists(self::AMOUNT, $data))$this->setAmount($data[self::AMOUNT]);
+        if(array_key_exists(self::PREVIOUS_TRANSACTION_ID, $data))$this->setPreviousTransactionId($data[self::PREVIOUS_TRANSACTION_ID]);
+        if(array_key_exists(self::CATEGORIZATION, $data))$this->setCategorization($data[self::CATEGORIZATION]);
+        if(array_key_exists(self::MEMO_ONLY_FOR_TESTING, $data))$this->setMemoOnlyForTesting($data[self::MEMO_ONLY_FOR_TESTING]);
+        if(array_key_exists(self::PAYEE_NAME_ONLY_FOR_TESTING, $data))$this->setPayeeNameOnlyForTesting($data[self::PAYEE_NAME_ONLY_FOR_TESTING]);
+        if(array_key_exists(self::CLEAR_DATE, $data))$this->setClearDate($data[self::CLEAR_DATE]);
     }
 
     public function getId(){return $this->transaction_id;}
@@ -92,5 +101,8 @@ class Transaction extends BaseObject{
 
     public function getClearDate(){return $this->clear_date;}
     public function setClearDate($clear_date){$this->clear_date = $clear_date;}
+
+    public function getTransactionMonth(){return (new DateTime($this->transaction_time))->format('m');}
+    public function getTransactionYear(){return (new DateTime($this->transaction_time))->format('Y');}
 }
 ?>

@@ -1,7 +1,7 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
-class BaseController {
+class EndPoints extends BaseObject{
 
     const LOGIN                                             = 'login';
     const GET_ALL_TRANSACTION                               = 'get-all-transactions';
@@ -49,7 +49,15 @@ class BaseController {
 
     public function getAllTransactions(){
         $this->setPage(self::GET_ALL_TRANSACTION);
-        return $response = $this->execute([]);
+        $response = [];
+        $call_back = $this->execute([]);
+
+        if($call_back!=false && count($call_back['transactions'])>0){
+            foreach($call_back['transactions'] as $t){
+                $response[] = new Transaction($t);
+            }
+        }
+        return $response;
     }
 
     public function getProjectedTransactionForMonth(){
@@ -104,17 +112,23 @@ class BaseController {
 
             $data = curl_exec($ch);
             if (curl_errno($ch)) {
-                return "Error: " . curl_error($ch);
+                //return "Error: " . curl_error($ch);
+                return false;
             } else {
-                //var_dump($data);
+
                 curl_close($ch);
-                return json_decode($data, true);
+                $response = json_decode($data, true);
+                if(array_key_exists('error',$response)){
+                    $this->setError($response['error']);
+                    //unset($response['error']);
+                }
+                return $response;
             }
 
         } catch(Exception $e){
-            echo $e->getMessage();
+            //return $e->getMessage();
+            return false;
         }
-        return false;
     }
 }
 ?>

@@ -1,0 +1,90 @@
+<?php
+include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
+
+class Transactions {
+    const JAN = 1;
+    const FEB = 2;
+    const MAR = 3;
+    const APR = 4;
+    const MAY = 5;
+    const JUN = 6;
+    const JUL = 7;
+    const AUG = 8;
+    const SEP = 9;
+    const OCT = 10;
+    const NOV = 11;
+    const DEC = 12;
+
+    private $transactions = [];
+    private $transaction_breakdown = [];  //debit & credit
+
+    public function __construct($transactions= []){
+        if($transactions!=[]){
+            $this->setTransactions($transactions);
+        }
+        else{
+            $this->setTransactions((new EndPoints())->getAllTransactions());
+        }
+    }
+
+    public function __destruct(){
+        unset($this->transactions);
+        unset($this->transaction_breakdown);
+    }
+
+    public function getTransactions(){return $this->transactions;}
+    private function setTransactions($transactions){$this->transactions = $transactions;}
+
+    public function getTransactionBreakdown(){return $this->transaction_breakdown;}
+    private function addToSpending($year, $month, $amount){
+        if(!array_key_exists($year.'-'.$month, $this->transaction_breakdown)){
+            $this->transaction_breakdown[$year.'-'.$month] = [];
+        }
+        if(!array_key_exists('spending', $this->transaction_breakdown[$year.'-'.$month])){
+            $this->transaction_breakdown[$year.'-'.$month]['spending'] = 0;
+        }
+        $this->transaction_breakdown[$year.'-'.$month]['spending'] += abs($amount);
+    }
+    private function addToMaking($year, $month, $amount){
+        if(!array_key_exists($year.'-'.$month, $this->transaction_breakdown)){
+            $this->transaction_breakdown[$year.'-'.$month] = [];
+        }
+        if(!array_key_exists('income', $this->transaction_breakdown[$year.'-'.$month])){
+            $this->transaction_breakdown[$year.'-'.$month]['income'] = 0;
+        }
+        $this->transaction_breakdown[$year.'-'.$month]['income'] += $amount;
+    }
+    private function addAverage($spending, $income){
+        $this->transaction_breakdown['average']['spending'] = $spending;
+        $this->transaction_breakdown['average']['income'] = $income;
+    }
+
+    private function currencyFormat(){
+
+    }
+
+    private function breakDownTransactionsByMonths(){
+        foreach($this->getTransactions() as $t){
+            $year = $t->getTransactionYear(true);
+            $month = $t->getTransactionMonth(true);
+            $amt = $t->getAmount();
+            if($amt > 0){
+                $this->addToMaking($year, $month, $amt);
+            }
+            else{
+                $this->addToSpending($year, $month, $amt);
+            }
+        }
+    }
+
+    public function calculateAverage(){
+        $this->breakDownTransactionsByMonths();
+    }
+
+    public function findWithVendor(){
+
+    }
+
+
+
+} 

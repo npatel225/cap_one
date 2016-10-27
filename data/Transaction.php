@@ -28,6 +28,7 @@ class Transaction extends BaseObject{
     private $memo_only_for_testing = '';
     private $payee_name_only_for_testing = '';
     private $clear_date = '';
+    private $is_disabled = false;
 
     public function __construct($data=[]){
         if($data != []){
@@ -48,6 +49,7 @@ class Transaction extends BaseObject{
         unset($this->memo_only_for_testing);
         unset($this->payee_name_only_for_testing);
         unset($this->clear_date);
+        unset($this->is_disabled);
     }
 
     public function set($data){
@@ -104,5 +106,8 @@ class Transaction extends BaseObject{
 
     public function getTransactionMonth(){return (new DateTime($this->transaction_time))->format('m');}
     public function getTransactionYear(){return (new DateTime($this->transaction_time))->format('Y');}
+
+    public function isDisabled(){return $this->is_disabled;}
+    public function setDisabled($disabled=true){$this->is_disabled = $disabled;}
 }
 ?>

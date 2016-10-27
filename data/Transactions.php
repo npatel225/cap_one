@@ -42,7 +42,13 @@ class Transactions {
         }
         return false;
     }
-    public function disableTransactionsBy
+    public function disableTransactionsByMerchant($merchant){
+        foreach($this->transactions as &$t){
+            if($t->getRawMerchant() == $merchant){
+                $t->setDisabled();
+            }
+        }
+    }
 
     public function getTransactionBreakdown(){return $this->transaction_breakdown;}
     private function addToSpending($year, $month, $amount){
@@ -74,14 +80,16 @@ class Transactions {
 
     private function breakDownTransactionsByMonths(){
         foreach($this->getTransactions() as $t){
-            $year = $t->getTransactionYear(true);
-            $month = $t->getTransactionMonth(true);
-            $amt = $t->getAmount();
-            if($amt > 0){   //positive is credit
-                $this->addToMaking($year, $month, $amt);
-            }
-            else{   //negative is debit=spending
-                $this->addToSpending($year, $month, $amt);
+            if(!$t->isDisabled()){
+                $year = $t->getTransactionYear(true);
+                $month = $t->getTransactionMonth(true);
+                $amt = $t->getAmount();
+                if($amt > 0){   //positive is credit
+                    $this->addToMaking($year, $month, $amt);
+                }
+                else{   //negative is debit=spending
+                    $this->addToSpending($year, $month, $amt);
+                }
             }
         }
     }

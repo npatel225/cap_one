@@ -1,0 +1,14 @@
+|| Shree Swaminarayanyo Vijayteh ||
+Neel Patel
+Capital One Interview: Coding Exercise
+
+Requirements:
+- PHP 5.5 or later
+- Chrome or Firefox browser
+-
+
+
+How to execute:
+- Extract all the files and copy them to the www directory of the localhost server.
+- Using the browser, please enter the <localhost url>/cap_one/index.php
+- Perform the operation to observe the results

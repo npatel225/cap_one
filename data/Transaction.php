@@ -5,6 +5,7 @@ class Transaction extends BaseObject{
 
     const TRANSACTION_ID                = 'transaction-id';
     const ACCOUNT_ID                    = 'transaction';
+    const AGGREGATION_TIME              = 'aggregation-time';
     const RAW_MERCHANT                  = 'raw-merchant';
     const MERCHANT                      = 'merchant';
     const IS_PENDING                    = 'is-pending';
@@ -18,6 +19,7 @@ class Transaction extends BaseObject{
 
     private $transaction_id = '';
     private $account_id = '';
+    private $aggregation_time = 0;
     private $raw_merchant = '';
     private $merchant = '';
     private $is_pending = false;
@@ -39,6 +41,7 @@ class Transaction extends BaseObject{
     public function __destruct(){
         unset($this->transaction_id);
         unset($this->account_id);
+        unset($this->aggregation_time);
         unset($this->raw_merchant);
         unset($this->merchant);
         unset($this->is_pending);
@@ -55,6 +58,7 @@ class Transaction extends BaseObject{
     public function set($data){
         parent::set($data);
         if(array_key_exists(self::TRANSACTION_ID, $data))$this->setId($data[self::TRANSACTION_ID]);
+        if(array_key_exists(self::AGGREGATION_TIME, $data))$this->setAggregationTime($data[self::AGGREGATION_TIME]);
         if(array_key_exists(self::ACCOUNT_ID, $data))$this->setAccountId($data[self::ACCOUNT_ID]);
         if(array_key_exists(self::RAW_MERCHANT, $data))$this->setRawMerchant($data[self::RAW_MERCHANT]);
         if(array_key_exists(self::MERCHANT, $data))$this->setMerchant($data[self::MERCHANT]);
@@ -70,6 +74,9 @@ class Transaction extends BaseObject{
 
     public function getId(){return $this->transaction_id;}
     public function setId($transaction_id){$this->transaction_id = $transaction_id;}
+
+    public function getAggregationTime(){return $this->aggregation_time;}
+    public function setAggregationTime($aggregation_time){$this->aggregation_time = $aggregation_time;}
 
     public function getAccountId(){return $this->account_id;}
     public function setAccountId($action_id){$this->account_id = $action_id;}
@@ -109,5 +116,23 @@ class Transaction extends BaseObject{
 
     public function isDisabled(){return $this->is_disabled;}
     public function setDisabled($disabled=true){$this->is_disabled = $disabled;}
+
+    public function printTransaction(){
+        return [
+            self::TRANSACTION_ID => $this->getId(),
+            self::AGGREGATION_TIME => $this->getAggregationTime(),
+            self::ACCOUNT_ID => $this->getAccountId(),
+            self::RAW_MERCHANT => $this->getRawMerchant(),
+            self::MERCHANT => $this->getMerchant(),
+            self::IS_PENDING => $this->IsPending(),
+            self::TRANSACTION_TIME => $this->getTransactionTime(),
+            self::AMOUNT => Transactions::formatCurrency($this->getAmount()),
+            self::PREVIOUS_TRANSACTION_ID => $this->getPreviousTransactionId(),
+            self::CATEGORIZATION => $this->getCategorization(),
+            self::MEMO_ONLY_FOR_TESTING => $this->getMemoOnlyForTesting(),
+            self::PAYEE_NAME_ONLY_FOR_TESTING => $this->getPayeeNameOnlyForTesting(),
+            self::CLEAR_DATE => $this->getClearDate(),
+        ];
+    }
 }
 ?>

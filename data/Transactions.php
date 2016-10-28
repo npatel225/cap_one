@@ -75,7 +75,7 @@ class Transactions {
         $this->transaction_breakdown['average']['income'] = $income;
     }
 
-    private function formatCurrency($int){
+    public static function formatCurrency($int){
         return '$'.number_format($int/10000, 2);
     }
 
@@ -123,10 +123,10 @@ class Transactions {
     }
 
     public function removeCreditCardPayments(){
-        for($i=0; $i>count($this->transactions); $i++){
+        for($i=0; $i<count($this->transactions)-1; $i++){
             $current = &$this->transactions[$i];
             $next = &$this->transactions[$i+1];
-            if(abs($current->getAmount())==(abs($next->getAmount())) && $current->getAggregationTime()==$next->getAggregationTime()){
+            if($next!=null && abs($current->getAmount())==(abs($next->getAmount())) && $current->getAggregationTime()==$next->getAggregationTime()){
                 $current->setDisabled();
                 $next->setDisabled();
             }
@@ -138,7 +138,7 @@ class Transactions {
         $response = [];
         foreach($this->transactions as $t){
             if($t->isDisabled()){
-                $response[] = $t;
+                $response[] = $t->printTransaction();
             }
         }
         return $response;

@@ -10,5 +10,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
 $transactions = new Transactions();
 $transactions->removeCreditCardPayments();
-echo "Monthly Spending & Making <br>".json_encode($transactions->getTransactionBreakdown(),  true);
-echo "<br><br>Removed CC Payment Transactions <br>".json_encode($transactions->getDisabledTransactions(),  true);
+echo "<b>Monthly Spending & Making</b><br>".json_encode($transactions->getTransactionBreakdown(),  true);
+echo "<br><br><b>Removed CC Payment Transactions (Verification Purpose)</b><br>".json_encode($transactions->getDisabledTransactions(),  true);
+

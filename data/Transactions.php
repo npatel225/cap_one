@@ -1,22 +1,15 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class Transactions
+ * controller class to do any and all
+ * operations with the transactions
+ */
 class Transactions {
-    const JAN = 1;
-    const FEB = 2;
-    const MAR = 3;
-    const APR = 4;
-    const MAY = 5;
-    const JUN = 6;
-    const JUL = 7;
-    const AUG = 8;
-    const SEP = 9;
-    const OCT = 10;
-    const NOV = 11;
-    const DEC = 12;
 
     private $transactions = [];
-    private $transaction_breakdown = [];  //debit & credit
+    private $transaction_breakdown = [];  //debit & credit per month
 
     public function __construct($transactions= []){
         if($transactions!=[]){
@@ -51,6 +44,7 @@ class Transactions {
         }
     }
 
+
     public function getTransactionBreakdown(){return $this->transaction_breakdown;}
     private function addToSpending($year, $month, $amount){
         if(!array_key_exists($year.'-'.$month, $this->transaction_breakdown)){
@@ -75,6 +69,11 @@ class Transactions {
         $this->transaction_breakdown['average']['income'] = $income;
     }
 
+    /**
+     * formatting the currency
+     * @param $int
+     * @return string
+     */
     public static function formatCurrency($int){
         return '$'.number_format($int/10000, 2);
     }
@@ -95,6 +94,10 @@ class Transactions {
         }
     }
 
+    /**
+     * calculate the average of spending and making
+     * per month and
+     */
     public function calculateAverage(){
         $this->breakDownTransactionsByMonths();
 
@@ -116,12 +119,25 @@ class Transactions {
         $this->addAverage($this->formatCurrency($avg_spending), $this->formatCurrency($avg_income));
     }
 
+    /**
+     * retaining the expected transactions
+     * for the rest of the month and recalculating
+     * the monthly spending & making plus for an
+     * average for a month
+     * @param $year
+     * @param $month
+     */
     public function getProjectedTransactionsForMonth($year, $month){
         $projected_transactions = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
         $this->addTransactions($projected_transactions);
         $this->calculateAverage();
     }
 
+    /**
+     * removing all the cc bill payments out of the
+     * transactions and recalculating monthly spending
+     * and making
+     */
     public function removeCreditCardPayments(){
         for($i=0; $i<count($this->transactions)-1; $i++){
             $current = &$this->transactions[$i];
@@ -134,6 +150,10 @@ class Transactions {
         $this->calculateAverage();
     }
 
+    /**
+     * retaining all the disabled transactions
+     * @return array
+     */
     public function getDisabledTransactions(){
         $response = [];
         foreach($this->transactions as $t){

@@ -1,6 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class DayBalance
+ */
 class DayBalance extends BaseObject{
 
     private $day;

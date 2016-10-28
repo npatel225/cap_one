@@ -1,6 +1,10 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class CommonArgument
+ * common arguments for all the calls
+ */
 class CommonArgument{
 
     const UID                   = 'uid';

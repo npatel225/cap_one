@@ -1,6 +1,10 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class Transaction
+ * class to hold each transaction
+ */
 class Transaction extends BaseObject{
 
     const TRANSACTION_ID                = 'transaction-id';

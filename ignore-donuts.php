@@ -14,4 +14,4 @@ $transactions->disableTransactionsByMerchant('Krispy Kreme Donuts');
 $transactions->disableTransactionsByMerchant('DUNKIN #336784');
 $transactions->calculateAverage();
 
-echo json_encode($transactions->getTransactionBreakdown(), true);
+echo "<b>Monthly Spending & Making <u>(without Donuts transactions)</u></b><br>".json_encode($transactions->getTransactionBreakdown(),  true);

@@ -1,6 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class Login
+ */
 class Login extends BaseObject{
 
     private $uid = 0;

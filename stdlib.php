@@ -1,5 +1,6 @@
 <?php
 
+// auto loader to include necessary classes
 spl_autoload_register(function ($class) {
     if(file_exists($_SERVER['DOCUMENT_ROOT'] . "/cap_one/core/$class.php")){
         include $_SERVER['DOCUMENT_ROOT'] . "/cap_one/core/$class.php";

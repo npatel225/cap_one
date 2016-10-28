@@ -1,6 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class EndPoints
+ */
 class EndPoints extends BaseObject{
 
     const LOGIN                                             = 'login';
@@ -19,7 +22,7 @@ class EndPoints extends BaseObject{
         $this->setUrl($base_url);
         $this->setUrl($base_url);
 
-        // setting up the default args
+        // setting up the default args for the call
         $common_argument = new CommonArgument();
         $common_argument->setUid(1110590645);
         $common_argument->setToken('326AD2EC093AF7AE9877BE03E77343D9');
@@ -28,6 +31,7 @@ class EndPoints extends BaseObject{
         $common_argument->setJsonVerboseResponse(false);
         $this->setCommonArguments($common_argument);
 
+        // login before making any call
         $this->login();
     }
     public function __destruct(){
@@ -36,6 +40,9 @@ class EndPoints extends BaseObject{
         unset($this->common_arguments);
     }
 
+    /**
+     * initial login call
+     */
     public function login(){
         $this->setPage(self::LOGIN);
         $response = $this->execute([
@@ -47,12 +54,20 @@ class EndPoints extends BaseObject{
         }
     }
 
+    /**
+     * @return array
+     */
     public function getAllTransactions(){
         $this->setPage(self::GET_ALL_TRANSACTION);
         $call_back = $this->execute([]);
         return $this->extractTransactions($call_back);
     }
 
+    /**
+     * @param $year
+     * @param $month
+     * @return array
+     */
     public function getProjectedTransactionForMonth($year, $month){
         $this->setPage(self::GET_PROJECTED_TRANSACTION_FOR_MONTH);
         $call_back = $this->execute([
@@ -62,22 +77,35 @@ class EndPoints extends BaseObject{
         return $this->extractTransactions($call_back);
     }
 
+    /**
+     *
+     */
     public function getRecentHistoricalAndProjectedBalances(){
         $this->setPage(self::GET_RECENT_HISTORICAL_AND_PROJECTED_BALANCED);
     }
 
+    /**
+     *
+     */
     public function getAccounts(){
         $this->setPage(self::GET_ACCOUNTS);
     }
 
+    /**
+     *
+     */
     public function aggregateTransaction(){
         $this->setPage(self::AGGREGATE_TRANSACTIONS);
     }
 
+    /**
+     *
+     */
     public function findSimilarTransactions(){
         $this->setPage(self::FIND_SIMILAR_TRANSACTIONS);
     }
 
+    // getters and setters
     public function getUrl(){return $this->url;}
     public function setUrl($url){$this->url = $url;}
 
@@ -87,6 +115,12 @@ class EndPoints extends BaseObject{
     public function getCommonArguments(){return $this->common_arguments;}
     public function setCommonArguments($common_arguments){$this->common_arguments = $common_arguments;}
 
+    /**
+     * execute all the calls with the
+     * capital one api
+     * @param $call_back
+     * @return array
+     */
     public function extractTransactions($call_back){
         $response = [];
         if($call_back!=false && count($call_back['transactions'])>0){

@@ -1,6 +1,11 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class BaseObject
+ * Since Errors are common in
+ * many calls
+ */
 class BaseObject {
 
     private $error = '';
@@ -14,6 +19,7 @@ class BaseObject {
         if(array_key_exists('error', $data))$this->setError($data['error']);
     }
 
+
     public function getError(){return $this->error;}
     public function setError($error){$this->error = $error;}
-} 
+}

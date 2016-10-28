@@ -1,6 +1,9 @@
 <?php
 include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
+/**
+ * Class Account
+ */
 class Account extends BaseObject{
     const PRIMARY_KEY = 'account-id';
 
@@ -63,6 +66,7 @@ class Account extends BaseObject{
         }
     }
 
+    // getters and setters
     public function getAccountId(){return $this->account_id;}
     public function setAccountId($account_id){$this->account_id = $account_id;}
 

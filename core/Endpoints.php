@@ -60,8 +60,12 @@ class EndPoints extends BaseObject{
         return $response;
     }
 
-    public function getProjectedTransactionForMonth(){
+    public function getProjectedTransactionForMonth($year, $month){
         $this->setPage(self::GET_PROJECTED_TRANSACTION_FOR_MONTH);
+        return $this->execute([
+            "year"=>$year,
+            "month"=>$month,
+        ]);
     }
 
     public function getRecentHistoricalAndProjectedBalances(){

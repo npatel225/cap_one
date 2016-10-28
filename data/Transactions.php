@@ -94,14 +94,15 @@ class Transactions {
         }
     }
 
-    public function calculateAverage(){
+    public function calculateAverage()
+    {
         $this->breakDownTransactionsByMonths();
 
         $total_months = 0;
         $total_spending = 0;
         $total_income = 0;
         setlocale(LC_MONETARY, 'en_US');
-        foreach($this->transaction_breakdown as $index=>&$value){
+        foreach ($this->transaction_breakdown as $index => &$value) {
 
             $total_months++;
             $total_spending += $value['spending'];
@@ -110,12 +111,12 @@ class Transactions {
             $value['spending'] = $this->formatCurrency($value['spending']);
             $value['income'] = $this->formatCurrency($value['income']);
         }
-        $avg_spending = $total_spending/$total_months;
-        $avg_income = $total_income/$total_months;
+        $avg_spending = $total_spending / $total_months;
+        $avg_income = $total_income / $total_months;
         $this->addAverage($this->formatCurrency($avg_spending), $this->formatCurrency($avg_income));
     }
 
-    public function findWithVendor(){
-
+    public function getProjectedTransactionsForMonth($year, $month){
+        $projected = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
     }
 }

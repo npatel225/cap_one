@@ -34,6 +34,7 @@ class Transactions {
 
     public function getTransactions(){return $this->transactions;}
     private function setTransactions($transactions){$this->transactions = $transactions;}
+    private function addTransactions($transactions){$this->transactions = array_merge($this->transactions, $transactions);}
     public function getTransactionById($transaction_id){
         foreach($this->transactions as $t){
             if($t->getId() == $transaction_id){
@@ -94,8 +95,7 @@ class Transactions {
         }
     }
 
-    public function calculateAverage()
-    {
+    public function calculateAverage(){
         $this->breakDownTransactionsByMonths();
 
         $total_months = 0;
@@ -117,6 +117,30 @@ class Transactions {
     }
 
     public function getProjectedTransactionsForMonth($year, $month){
-        return $projected = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
+        $projected_transactions = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
+        $this->addTransactions($projected_transactions);
+        $this->calculateAverage();
+    }
+
+    public function removeCreditCardPayments(){
+        for($i=0; $i>count($this->transactions); $i++){
+            $current = &$this->transactions[$i];
+            $next = &$this->transactions[$i+1];
+            if(abs($current->getAmount())==(abs($next->getAmount())) && $current->getAggregationTime()==$next->getAggregationTime()){
+                $current->setDisabled();
+                $next->setDisabled();
+            }
+        }
+        $this->calculateAverage();
+    }
+
+    public function getDisabledTransactions(){
+        $response = [];
+        foreach($this->transactions as $t){
+            if($t->isDisabled()){
+                $response[] = $t;
+            }
+        }
+        return $response;
     }
 }

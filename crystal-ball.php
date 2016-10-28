@@ -5,11 +5,11 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
 
 /**
  * This file returns the monthly spending and the
- * makes and of in the average month without all
- * the donut related transactions
+ * makes and of in the average month including
+ * the rest of the month by using the
+ * getProjectedTransactionsForMonth endpoint
  */
 
 $transactions = new Transactions();
-$result = $transactions->getProjectedTransactionsForMonth(2015, 10);
-
-echo json_encode($result,  true);
+$transactions->getProjectedTransactionsForMonth(2016, 10);
+echo json_encode($transactions->getTransactionBreakdown(),  true);

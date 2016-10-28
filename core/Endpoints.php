@@ -49,23 +49,17 @@ class EndPoints extends BaseObject{
 
     public function getAllTransactions(){
         $this->setPage(self::GET_ALL_TRANSACTION);
-        $response = [];
         $call_back = $this->execute([]);
-
-        if($call_back!=false && count($call_back['transactions'])>0){
-            foreach($call_back['transactions'] as $t){
-                $response[] = new Transaction($t);
-            }
-        }
-        return $response;
+        return $this->extractTransactions($call_back);
     }
 
     public function getProjectedTransactionForMonth($year, $month){
         $this->setPage(self::GET_PROJECTED_TRANSACTION_FOR_MONTH);
-        return $this->execute([
+        $call_back = $this->execute([
             "year"=>$year,
             "month"=>$month,
         ]);
+        return $this->extractTransactions($call_back);
     }
 
     public function getRecentHistoricalAndProjectedBalances(){
@@ -92,6 +86,16 @@ class EndPoints extends BaseObject{
 
     public function getCommonArguments(){return $this->common_arguments;}
     public function setCommonArguments($common_arguments){$this->common_arguments = $common_arguments;}
+
+    public function extractTransactions($call_back){
+        $response = [];
+        if($call_back!=false && count($call_back['transactions'])>0){
+            foreach($call_back['transactions'] as $t){
+                $response[] = new Transaction($t);
+            }
+        }
+        return $response;
+    }
 
     private function execute($args){
         try{

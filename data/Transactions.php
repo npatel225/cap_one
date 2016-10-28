@@ -117,6 +117,6 @@ class Transactions {
     }
 
     public function getProjectedTransactionsForMonth($year, $month){
-        $projected = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
+        return $projected = (new EndPoints())->getProjectedTransactionForMonth($year, $month);
     }
 }

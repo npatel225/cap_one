@@ -10,7 +10,6 @@ include_once($_SERVER['DOCUMENT_ROOT'] . "/cap_one/stdlib.php");
  */
 
 $transactions = new Transactions();
-$transactions->getProjectedTransactionsForMonth(2016, 10);
-$transactions->calculateAverage();
+$result = $transactions->getProjectedTransactionsForMonth(2015, 10);
 
-echo json_encode($transactions->getTransactionBreakdown(), true);
+echo json_encode($result,  true);
